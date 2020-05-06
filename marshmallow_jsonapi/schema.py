@@ -110,8 +110,6 @@ class Schema(ma.Schema):
         for local_field in self.fields:
             if not isinstance(local_field, BaseRelationship):
                 continue
-            if not local_field.include_data:
-                continue
             if local_field.__use_serialization_cache:
                 if not hasattr(local_field, '_serialization_cache'):
                     local_field._serialization_cache = {}
