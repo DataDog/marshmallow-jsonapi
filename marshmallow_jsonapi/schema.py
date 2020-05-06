@@ -101,20 +101,7 @@ class Schema(ma.Schema):
         self.included_data = {}
         self.document_meta = {}
 
-        self.cache_relations()
-
     OPTIONS_CLASS = SchemaOpts
-
-    def cache_relations(self):
-        """Recursive function which setups caches for relationships"""
-        for local_field in self.fields:
-            if not isinstance(local_field, BaseRelationship):
-                continue
-            if local_field.__use_serialization_cache:
-                if not hasattr(local_field, '_serialization_cache'):
-                    local_field._serialization_cache = {}
-                    # Go deeper
-                    local_field.schema.cache_relations()
 
     def check_relations(self, relations):
         """Recursive function which checks if a relation is valid."""
