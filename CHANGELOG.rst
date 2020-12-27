@@ -2,6 +2,13 @@
 Changelog
 *********
 
+0.21.4 (unreleased)
+===================
+
+Bug fixes:
+
+* Fix behavior when serializing ``None`` (:pr:`302`). Thanks :user:`mahenzon`.
+
 0.21.3 (2020-03-20)
 ===================
 
