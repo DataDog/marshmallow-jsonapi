@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 import pytest
 from marshmallow import ValidationError
-
 from marshmallow_jsonapi import Schema, fields
 from marshmallow_jsonapi.exceptions import IncorrectTypeError
 from marshmallow_jsonapi.utils import _MARSHMALLOW_VERSION_INFO
-from tests.base import unpack
+
 from tests.base import (
+    ArticleSchema,
     AuthorSchema,
     CommentSchema,
-    PostSchema,
     PolygonSchema,
-    ArticleSchema,
+    PostSchema,
+    unpack,
 )
 
 
@@ -99,7 +99,7 @@ class TestResponseFormatting:
         assert "links" not in data
 
     def test_schema_with_relationship_processes_none(self):
-        data = CommentSchema().dump(None)
+        data = unpack(CommentSchema().dump(None))
         assert data == {"data": None}
 
     def test_dump_empty_list(self):
@@ -136,7 +136,11 @@ class TestCompoundDocuments:
     def test_include_data_with_all_relations(self, post):
         data = unpack(
             PostSchema(
-                include_data=("author", "post_comments", "post_comments.author")
+                include_data=(
+                    "author",
+                    "post_comments",
+                    "post_comments.author",
+                )
             ).dump(post)
         )
         assert "included" in data
@@ -184,7 +188,10 @@ class TestCompoundDocuments:
         obj = {
             "id": "1",
             "data": "data1",
-            "children": [{"id": "2", "data": "data2"}, {"id": "3", "data": "data3"}],
+            "children": [
+                {"id": "2", "data": "data2"},
+                {"id": "3", "data": "data3"},
+            ],
         }
         data = unpack(RefSchema(include_data=("children",)).dump(obj))
         assert "included" in data
@@ -283,7 +290,11 @@ class TestCompoundDocuments:
     def test_include_data_load(self, post):
         serialized = unpack(
             PostSchema(
-                include_data=("author", "post_comments", "post_comments.author")
+                include_data=(
+                    "author",
+                    "post_comments",
+                    "post_comments.author",
+                )
             ).dump(post)
         )
         loaded = unpack(PostSchema().load(serialized))
@@ -484,12 +495,15 @@ class TestErrorFormatting:
         }
 
     def test_validate_id(self):
-        """ the pointer for id should be at the data object, not attributes """
+        """the pointer for id should be at the data object, not attributes"""
         author = {
             "data": {
                 "type": "people",
                 "id": 123,
-                "attributes": {"first_name": "Rob", "password": "correcthorses"},
+                "attributes": {
+                    "first_name": "Rob",
+                    "password": "correcthorses",
+                },
             }
         }
         try:
@@ -541,7 +555,11 @@ class TestErrorFormatting:
     def test_errors_many(self):
         authors = make_serialized_authors(
             [
-                {"first_name": "Dan", "last_name": "Gebhardt", "password": "bad"},
+                {
+                    "first_name": "Dan",
+                    "last_name": "Gebhardt",
+                    "password": "bad",
+                },
                 {
                     "first_name": "Dan",
                     "last_name": "Gebhardt",
@@ -577,13 +595,16 @@ class TestErrorFormatting:
         assert err["detail"] == "`data` expected to be a collection."
 
     def test_many_id_errors(self):
-        """ the pointer for id should be at the data object, not attributes """
+        """the pointer for id should be at the data object, not attributes"""
         author = {
             "data": [
                 {
                     "type": "people",
                     "id": "invalid",
-                    "attributes": {"first_name": "Rob", "password": "correcthorses"},
+                    "attributes": {
+                        "first_name": "Rob",
+                        "password": "correcthorses",
+                    },
                 },
                 {
                     "type": "people",
@@ -729,7 +750,9 @@ class TestRelationshipLoading(object):
             id = fields.Integer()
             body = fields.String()
             comments = fields.Relationship(
-                schema=RelationshipWithSchemaCommentSchema, many=True, type_="comments"
+                schema=RelationshipWithSchemaCommentSchema,
+                many=True,
+                type_="comments",
             )
             author = fields.Relationship(
                 dump_only=False,
@@ -753,7 +776,10 @@ class TestRelationshipLoading(object):
             {
                 "id": "2",
                 "type": "people",
-                "attributes": {"first_name": "Marshmallow Jr", "last_name": "JsonAPI"},
+                "attributes": {
+                    "first_name": "Marshmallow Jr",
+                    "last_name": "JsonAPI",
+                },
             },
         ]
 

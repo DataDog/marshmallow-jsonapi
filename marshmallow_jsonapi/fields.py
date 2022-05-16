@@ -252,7 +252,7 @@ class Relationship(BaseRelationship):
     # to prevent their serialization
     def serialize(self, attr, obj, accessor=None):
         if obj is None or self.include_resource_linkage or self.include_data:
-            return super().serialize(attr, obj, accessor)
+            return super(Relationship, self).serialize(attr, obj, accessor)
         return self._serialize(None, attr, obj)
 
     def _serialize(self, value, attr, obj):
