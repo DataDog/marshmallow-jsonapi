@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "marshmallow-jsonapi"
-version = "0.24.0"
+version = "0.24.1"
 description = "marshmallow-jsonapi provides a simple way to produce JSON API-compliant data in any Python web framework."
 authors = ["Your Name <you@example.com>"]
 license = "MIT"

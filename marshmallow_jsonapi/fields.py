@@ -295,10 +295,6 @@ class Relationship(BaseRelationship):
         else:
             result = self.schema.dump(value)
 
-        data = result
-
-        item = data["data"]
-        result = self.schema.dump(value)
         item = result["data"]
         self.root.included_data[(item["type"], item["id"])] = item
         for key, value in self.schema.included_data.items():
