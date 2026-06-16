@@ -1,4 +1,4 @@
-marshmallow>=3.22.0
+marshmallow>=3.26.2
 Flask>=1.1.2
 sphinx>=3.5.3
 sphinx-rtd-theme>=0.5.0
